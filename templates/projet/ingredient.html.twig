@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+{% form_theme formulaireIngredient'bootstrap_4_layout.html.twig' %}
+
+{% block body %}
+
+  
+<section id="about" class="about-mf sect-pt4 route">
+<div id="contact" class="box-shadow-full">
+                  <div class="title-box-2">
+                    <h5 class="title-left">
+                      Ingredient
+                    </h5>
+                  </div>
+
+{{ form_start(formulaireIngredient)}}
+{{ form_row(formulaireIngredient.IdRecette, {'attr':{'placeholder':"Entrée le nom de la société"}})}}
+{{ form_row(formulaireIngredient.Aliment, {'attr':{'placeholder':"Entrée le numéro du fournisseur"}})}}
+{{ form_row(formulaireIngredient.QteNecessaire, {'attr':{'placeholder':"Adresse: 9 rue les reines"}})}}
+{{ form_row(formulaireIngredient.PrixUnitaire, {'attr':{'placeholder':"Adresse: 9 rue les reines"}})}}
+
+
+
+<button type="button" class="btn btn-primary">Enregistrer</button>
+
+{{ form_end(formulaireIngredient)}}
+</div>
+</section>
+
+
+{% endblock %}

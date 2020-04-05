@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+{% form_theme formulaireLot 'bootstrap_4_layout.html.twig' %}
+{% block body %}
+
+
+<section id="about" class="about-mf sect-pt4 route">
+    
+    <div id="contact" class="box-shadow-full">
+                <div class="title-box-2">
+                    <h5 class="title-left">
+                      Reception de lot
+                    </h5>
+                </div>
+                {{ form_start(formulaireLot)}}
+                         {{ form_row(formulaireLot.fournisseur, {'attr':{'placeholder':"Entrée le nom de la société"}})}}
+                         <div float="right"> <a href="/fournisseur"> Vous ne retrouvez le fournisseur, Enregistrez le ici </a></div>
+                  <br>
+
+                  <button type="submit" class="btn btn-primary">Enregistrer</button>
+                {{ form_end(formulaireLot)}}
+    </div>
+</section>
+
+{% endblock %}

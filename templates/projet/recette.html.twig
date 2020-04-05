@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+{% form_theme formulaireRecette 'bootstrap_4_layout.html.twig' %}
+
+{% block body %}
+
+  
+<section id="about" class="about-mf sect-pt4 route">
+<div id="contact" class="box-shadow-full">
+                  <div class="title-box-2">
+                    <h5 class="title-left">
+                      Nouvelle Recette
+                    </h5>
+                  </div>
+
+{{ form_start(formulaireRecette)}}
+{{ form_row(formulaireRecette.NomRecette, {'attr':{'placeholder':"Entrée le nom de la recette"}})}}
+{{ form_row(formulaireRecette.typeRecette)}}
+{{ form_row(formulaireRecette.duree, {'attr':{'placeholder':"45min"}})}}
+
+
+
+<button type="submit" class="btn btn-primary">Enregistrer</button>
+
+{{ form_end(formulaireRecette)}}
+</div>
+</section>
+
+
+{% endblock %}

@@ -1,0 +1,34 @@
+
+{% extends 'base.html.twig' %}
+{% form_theme formulaire 'bootstrap_4_layout.html.twig' %}
+{% block body %}
+
+<section id="about" class="about-mf sect-pt4 route">
+<div id="contact" class="box-shadow-full">
+                  <div class="title-box-2">
+                    <h5 class="title-left">
+                      Nouveau Fournisseur
+                    </h5>
+                  </div>
+
+{{ form_start(formulaire)}}
+{{ form_row(formulaire.societe, {'attr':{'placeholder':"Entrée le nom de la société"}})}}
+{{ form_row(formulaire.telephone, {'attr':{'placeholder':"Entrée le numéro du fournisseur"}})}}
+{{ form_row(formulaire.adresse, {'attr':{'placeholder':"Adresse: 9 rue les reines"}})}}
+{{ form_row(formulaire.codePostal, {'attr':{'placeholder':"91220"}})}}
+{{ form_row(formulaire.ville, {'attr':{'placeholder':"Bretigny-sur-Orge"}})}}
+
+
+<button class="btn btn-primary" type="submit">Enregistrer</button>
+
+{{ form_end(formulaire)}}
+</div>
+</section>
+   
+  
+
+
+
+
+
+{% endblock %}
