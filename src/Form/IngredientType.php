@@ -13,7 +13,6 @@ class IngredientType extends AbstractType
     {
         $builder
             ->add('Aliment')
-            ->add('IdRecette')
             ->add('QteNecessaire')
             ->add('PrixUnitaire')
         ;

@@ -30,7 +30,7 @@ class Lot
     private $fournisseur;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\DetailAlimentRecu", mappedBy="lot")
+     * @ORM\OneToMany(targetEntity="App\Entity\DetailLotRecu", mappedBy="lot")
      */
     private $DetailAliment;
 
@@ -38,6 +38,7 @@ class Lot
     {
         $this->DetailAliment = new ArrayCollection();
     }
+
 
     public function getId(): ?int
     {
@@ -68,15 +69,16 @@ class Lot
         return $this;
     }
 
+
     /**
-     * @return Collection|DetailAlimentRecu[]
+     * @return Collection|DetailLotRecu[]
      */
     public function getDetailAliment(): Collection
     {
         return $this->DetailAliment;
     }
 
-    public function addDetailAliment(DetailAlimentRecu $detailAliment): self
+    public function addDetailAliment(DetailLotRecu $detailAliment): self
     {
         if (!$this->DetailAliment->contains($detailAliment)) {
             $this->DetailAliment[] = $detailAliment;
@@ -86,7 +88,7 @@ class Lot
         return $this;
     }
 
-    public function removeDetailAliment(DetailAlimentRecu $detailAliment): self
+    public function removeDetailAliment(DetailLotRecu $detailAliment): self
     {
         if ($this->DetailAliment->contains($detailAliment)) {
             $this->DetailAliment->removeElement($detailAliment);

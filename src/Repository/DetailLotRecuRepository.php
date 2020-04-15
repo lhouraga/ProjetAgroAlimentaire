@@ -2,25 +2,25 @@
 
 namespace App\Repository;
 
-use App\Entity\DetailAlimentRecu;
+use App\Entity\DetailLotRecu;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
- * @method DetailAlimentRecu|null find($id, $lockMode = null, $lockVersion = null)
- * @method DetailAlimentRecu|null findOneBy(array $criteria, array $orderBy = null)
- * @method DetailAlimentRecu[]    findAll()
- * @method DetailAlimentRecu[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method DetailLotRecu|null find($id, $lockMode = null, $lockVersion = null)
+ * @method DetailLotRecu|null findOneBy(array $criteria, array $orderBy = null)
+ * @method DetailLotRecu[]    findAll()
+ * @method DetailLotRecu[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class DetailAlimentRecuRepository extends ServiceEntityRepository
+class DetailLotRecuRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, DetailAlimentRecu::class);
+        parent::__construct($registry, DetailLotRecu::class);
     }
 
     // /**
-    //  * @return DetailAlimentRecu[] Returns an array of DetailAlimentRecu objects
+    //  * @return DetailLotRecu[] Returns an array of DetailLotRecu objects
     //  */
     /*
     public function findByExampleField($value)
@@ -37,7 +37,7 @@ class DetailAlimentRecuRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?DetailAlimentRecu
+    public function findOneBySomeField($value): ?DetailLotRecu
     {
         return $this->createQueryBuilder('d')
             ->andWhere('d.exampleField = :val')

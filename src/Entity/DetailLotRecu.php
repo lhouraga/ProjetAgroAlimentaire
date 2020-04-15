@@ -5,9 +5,9 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\DetailAlimentRecuRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\DetailLotRecuRepository")
  */
-class DetailAlimentRecu
+class DetailLotRecu
 {
     /**
      * @ORM\Id()
@@ -15,11 +15,6 @@ class DetailAlimentRecu
      * @ORM\Column(type="integer")
      */
     private $id;
-
-    /**
-     * @ORM\Column(type="string", length=100)
-     */
-    private $TypeAliment;
 
     /**
      * @ORM\Column(type="string", length=100)
@@ -57,23 +52,18 @@ class DetailAlimentRecu
      */
     private $lot;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\TypeAliment", inversedBy="detAliment")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $typeAliment;
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getTypeAliment(): ?string
-    {
-        return $this->TypeAliment;
-    }
-
-    public function setTypeAliment(string $TypeAliment): self
-    {
-        $this->TypeAliment = $TypeAliment;
-
-        return $this;
-    }
-
+    
     public function getNomAliment(): ?string
     {
         return $this->NomAliment;
@@ -154,6 +144,18 @@ class DetailAlimentRecu
     public function setLot(?Lot $lot): self
     {
         $this->lot = $lot;
+
+        return $this;
+    }
+
+    public function getTypeAliment(): ?TypeAliment
+    {
+        return $this->typeAliment;
+    }
+
+    public function setTypeAliment(?TypeAliment $typeAliment): self
+    {
+        $this->typeAliment = $typeAliment;
 
         return $this;
     }

@@ -2,6 +2,9 @@
 
 namespace App\Controller;
 
+use Symfony\Component\HttpFoundation\Session\Attribute\AttributeBag;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Session\Storage\PhpBridgeSessionStorage;
 use Doctrine\ORM\EntityManagerInterface;
@@ -11,10 +14,11 @@ use App\Entity\Lot;
 use App\Entity\DetailAlimentRecu;
 use App\Entity\Recette;
 use App\Entity\Ingredient;
+use App\Entity\DetailLotRecu;
 
 use App\Form\FournisseurType;
 use App\Form\RecetteType;
-use App\Form\DetailAlimentType;
+use App\Form\DetailLotType;
 use App\Form\IngredientType;
 use App\Form\LotType;
 use Symfony\Component\HttpFoundation\Request;
@@ -73,11 +77,15 @@ class ProjetController extends AbstractController
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()){
+           
 
             $manager->persist($recette);
             $manager->flush();
 
-            return $this->redirectToRoute('IngredientRec');
+            $sessionRec = new Session(new NativeSessionStorage(), new AttributeBag());
+            $sessionRec->set('Recette', $recette->getId());
+            
+            return $this->redirectToRoute('IngredientRec',['recette'=>$sessionRec->get('Recette')]);
         }
         return $this->render('projet/recette.html.twig',[
             'formulaireRecette'=> $form->createView()
@@ -89,24 +97,20 @@ class ProjetController extends AbstractController
      */
     public function lot(Request $request, EntityManagerInterface $manager)
     {
-       // $session = new Session(new PhpBridgeSessionStorage());
-       // $session = new Session();
-       // $session->start();
+        
         $lot= new Lot();
-        //$repoF= $this->getDoctrine()->getRepository(Fournisseur::class);
-        //$fournisseurs= $repoF->findAll();
+         
         $form= $this->createForm(LotType::class, $lot);
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()){
             $lot-> setDateReception(new \DateTime());
-            //$task = $form->getData()->$lot->getId();
-
             $manager->persist($lot);
             $manager->flush();
-           // $session->set('idLot', $lot);
-            
-            return $this->redirectToRoute('detailAliment', ['idDetail'=>$lot->getId()]);
+           
+            $session = new Session(new NativeSessionStorage(), new AttributeBag());
+            $session->set('idLot', $lot->getId());
+            return $this->redirectToRoute('detailLot',['idLo'=>$session->get('idLot')]);
         }
         return $this->render('projet/lot.html.twig',[
             'formulaireLot' =>$form->createView(),
@@ -116,14 +120,34 @@ class ProjetController extends AbstractController
 
 
     /**
-     * @Route("/detail", name="detailAliment")
+     * @Route("/detail", name="detailLot")
      */
-    public function Detail(Request $request)
+    public function Detail(Request $request, EntityManagerInterface $manager)
+    
     {
-        $detail=new DetailAlimentRecu(); 
-        $form= $this->createForm(DetailAlimentType::class,$detail) ;        
-        return $this->render('projet/detailAliment.html.twig', [
-            'formulaireDetail' =>$form->createView(),
+        $detail=new DetailLotRecu(); 
+        $form= $this->createForm(DetailLotType::class,$detail) ;
+        $form->handleRequest($request);
+
+        
+
+        if($form->isSubmitted() && $form->isValid()){
+        $session = new Session();
+        $lot=new Lot();
+        $repoL= $this->getDoctrine()->getRepository(Lot::class);
+        $id= $session->get('idLot');
+        $lot= $repoL->find($id);
+
+            $detail-> setQteUtilise(0);
+            $detail-> setLot($lot);
+            $detail-> setQteDispo($detail->getQteRecu());
+            $manager->persist($detail);
+            $manager->flush();
+            
+            return $this->redirectToRoute('detailLot');
+        }
+        return $this->render('projet/detailLot.html.twig', [
+            'formulaireDet' =>$form->createView(),
             //'id' => $session->get('idLot')
 
         ]);
@@ -132,10 +156,32 @@ class ProjetController extends AbstractController
      /**
      * @Route("/ingredient", name="IngredientRec")
      */
-    public function Ingre(Request $request)
+    public function Ingre(Request $request, EntityManagerInterface $manager)
     {
+  
         $ingredient=new Ingredient(); 
-        $form= $this->createForm(IngredientType::class,$ingredient) ;        
+        $form= $this->createForm(IngredientType::class,$ingredient) ;  
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+            $sessionRec = new Session();
+            $recette=new Recette();
+            $repoL= $this->getDoctrine()->getRepository(Recette::class);
+            $id= $sessionRec->get('Recette');
+            $recette= $repoL->find($id);
+
+            $recette->addIngredient($ingredient);
+            $ingredient->addRecette($recette);
+
+
+            $manager->persist($ingredient);
+            $manager->flush();
+            
+            
+            return $this->redirectToRoute('IngredientRec');
+        }
+
+             
         return $this->render('projet/ingredient.html.twig', [
             'formulaireIngredient' =>$form->createView()
         ]);

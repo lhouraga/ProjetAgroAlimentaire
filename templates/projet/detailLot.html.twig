@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+{% form_theme formulaireDet 'bootstrap_4_layout.html.twig' %}
+{% block body %}
+
+
+<section id="about" class="about-mf sect-pt4 route">
+    
+    <div id="contact" class="box-shadow-full">
+                <div class="title-box-2">
+                    <h5 class="title-left">
+                      Détail du lot
+                    </h5>
+                </div>
+                {{ form_start(formulaireDet)}}
+                 
+                  {{ form_row(formulaireDet.TypeAliment)}}
+                  {{ form_row(formulaireDet.NomAliment, {'attr':{'placeholder':"Entrée le numéro du fournisseur"}})}}
+                  {{ form_row(formulaireDet.PrixUnitaire, {'attr':{'placeholder':"Adresse: 9 rue les reines"}})}}
+                  {{ form_row(formulaireDet.QteRecu, {'attr':{'placeholder':"91220"}})}}
+                  {{ form_row(formulaireDet.DatePeremption)}}
+
+                  <button type="submit" class="btn btn-primary">Enregistrer</button>
+                {{ form_end(formulaireDet)}}
+    </div>
+</section>
+
+{% endblock %}

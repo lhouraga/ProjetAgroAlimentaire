@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -31,6 +33,21 @@ class Recette
      * @ORM\JoinColumn(nullable=false)
      */
     private $typeRecette;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Ingredient", inversedBy="recettes")
+     */
+    private $ingredient;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $preparation;
+
+    public function __construct()
+    {
+        $this->ingredient = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -69,6 +86,44 @@ class Recette
     public function setTypeRecette(?TypeRecette $typeRecette): self
     {
         $this->typeRecette = $typeRecette;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Ingredient[]
+     */
+    public function getIngredient(): Collection
+    {
+        return $this->ingredient;
+    }
+
+    public function addIngredient(Ingredient $ingredient): self
+    {
+        if (!$this->ingredient->contains($ingredient)) {
+            $this->ingredient[] = $ingredient;
+        }
+
+        return $this;
+    }
+
+    public function removeIngredient(Ingredient $ingredient): self
+    {
+        if ($this->ingredient->contains($ingredient)) {
+            $this->ingredient->removeElement($ingredient);
+        }
+
+        return $this;
+    }
+
+    public function getPreparation(): ?string
+    {
+        return $this->preparation;
+    }
+
+    public function setPreparation(?string $preparation): self
+    {
+        $this->preparation = $preparation;
 
         return $this;
     }
