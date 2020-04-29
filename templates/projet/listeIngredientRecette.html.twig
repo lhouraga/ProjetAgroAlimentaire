@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="container mt-4">
+<h3> Liste des ingredients de la recette de {{ nom }}  /pers</h3>
+<div class="row">
+<div class="col-md-8">
+<table class="table table-striped">
+<thead>
+<tr>
+    <th> Aliment</th>
+    <th>Quantité (kg)</th>
+    <th>Prix Unitaire</th>
+    <th class="float-right">Action souhaitée</th>
+</tr>
+</thead>
+<tbody>
+  
+ {%   for ingredient in ingredients %}
+   <tr> 
+       <td>{{ ingredient.Aliment}} </td>
+       <td>{{ ingredient.QteNecessaire}} </td>
+       <td>{{ ingredient.PrixUnitaire}} </td>
+      <td>
+          <div class="float-right">
+          <a href="{{path('ModifIngredient', {id: ingredient.id})}}" class="btn btn-primary"> Modifier </a>
+          <a href="{{path('ModifIngredient', {id: ingredient.id})}}" class="btn btn-danger"> Supprimer </a>
+          </div>
+       </td> 
+   
+  </tr>
+  {% endfor %}
+</tbody>
+</table>  
+ </div>
+ </div> 
+</div>
+
+{% endblock %}

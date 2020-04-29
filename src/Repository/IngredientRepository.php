@@ -47,4 +47,18 @@ class IngredientRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    // /**
+    //  * @return Ingredient[] Returns an array of Ingredient objects
+    //  */
+    public function findIngre($value)
+    {
+        return $this->createQueryBuilder('i')
+            ->leftJoin('i.recettes','r')
+            ->Where('r.id = :val')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

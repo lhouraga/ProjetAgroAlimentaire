@@ -6,8 +6,17 @@
        
         <link rel="stylesheet" href="https://bootswatch.com/4/flatly/bootstrap.css"/>
         
-        <link href="{{asset('css/style.css')}}" rel="stylesheet">
+       <link href="{{asset('css/bootstrap.min.css')}}" rel="stylesheet">
+        
         <link href="{{asset('css/custom.min.css')}}" rel="stylesheet">
+        <link href="{{asset('css/font-awesome.min.css')}}" rel="stylesheet">
+        <link href="{{asset('css/animate.min.css')}}" rel="stylesheet">
+        <link href="{{asset('css/ionicons.min.css')}}" rel="stylesheet">
+        <link href="{{asset('css/owl.carousel.min.css')}}" rel="stylesheet">
+        <link href="{{asset('css/owl.lightbox.min.css')}}" rel="stylesheet">
+        <link href="{{asset('css/style.css')}}" rel="stylesheet">
+
+
 
        
         
@@ -18,6 +27,8 @@
       <div class="container">
         <a href="../" class="navbar-brand">AGROLOG</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+          <span class="navbar-toggler-icon"></span>
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
@@ -34,9 +45,8 @@
               <div class="dropdown-menu" aria-labelledby="themes">
                 <a class="dropdown-item" href="/recette/">Créer Recette</a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Supprimer</a>
-                <a class="dropdown-item" href="#">Modifier</a>
                 <a class="dropdown-item" href="#">Recherche</a>
+                <a class="dropdown-item" href="/listeRecette">Toutes nos recettes</a>
                 
                 
               </div>
@@ -45,9 +55,9 @@
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="download">Plats <span class="caret"></span></a>
               <div class="dropdown-menu" aria-labelledby="download">
-                <a class="dropdown-item" target="_blank" href="/">Préparer Plats</a>
+                <a class="dropdown-item" href="/preparation">Préparer Plats</a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#" download>Renseigner</a>
+                <a class="dropdown-item" href="/prepa">Renseigner</a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="#" download>Listes Plats</a>
                 
@@ -85,10 +95,21 @@
         </div>
         {% block javascripts %}
   <script src="{{asset('js/jquery.min.js')}}"></script>
+  <script src="{{asset('js/jquery-migrate.min.js')}}"></script>
+  
   <script src="{{asset('js/popper.min.js')}}"></script>
   <script src="{{asset('js/bootstrap.min.js')}}"></script>
+
+  <script src="{{asset('js/easing.min.js')}}"></script>
+  <script src="{{asset('js/jquery.waypoints.js')}}"></script>
+  <script src="{{asset('js/jquery.counterup.js')}}"></script>
+  <script src="{{asset('js/owl.carousel.min.js')}}"></script>
+  <script src="{{asset('js/lightbox.min.js')}}"></script>
+  <script src="{{asset('js/typed.min.js')}}"></script>
   <script src="{{asset('js/custom.js')}}"></script>
-        
+  <script src="{{asset('js/main.js')}}"></script>
+
+
         
         {% endblock %}
 

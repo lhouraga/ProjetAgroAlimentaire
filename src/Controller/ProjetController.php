@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Controller\PreparationController;
 use Symfony\Component\HttpFoundation\Session\Attribute\AttributeBag;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
@@ -21,6 +22,9 @@ use App\Form\RecetteType;
 use App\Form\DetailLotType;
 use App\Form\IngredientType;
 use App\Form\LotType;
+
+use App\Repository\RecetteRepository;
+use App\Repository\IngredientRepository;
 use Symfony\Component\HttpFoundation\Request;
 
 class ProjetController extends AbstractController
@@ -174,7 +178,7 @@ class ProjetController extends AbstractController
             $ingredient->addRecette($recette);
 
 
-            $manager->persist($ingredient);
+            
             $manager->flush();
             
             
@@ -186,4 +190,85 @@ class ProjetController extends AbstractController
             'formulaireIngredient' =>$form->createView()
         ]);
     }
+
+    /**
+     * @Route("/listeRecette", name="ListeRecette")
+     */
+    public function ListeRec(RecetteRepository $repoR)
+    {
+
+        $recettes= $repoR->findAll();
+        return $this->render('projet/listeRecette.html.twig', [
+            'recettes' => $recettes
+        ]);
+    }
+
+    /**
+     * @Route("/editerRecette/{id}", name="ModifRecette")
+     * @param Recette $recette
+     */
+    public function editeRec(Recette $recette,Request $request, EntityManagerInterface $manager)
+    {
+        
+        $form=$this->createForm(RecetteType::class, $recette);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+
+            $manager->flush();
+           // $ingredients= $recette ->getIngredient();
+            $sessionIngreRec = new Session(new NativeSessionStorage(), new AttributeBag());
+            $sessionRecNom = new Session(new NativeSessionStorage(), new AttributeBag());
+            $sessionIngreRec->set('Recette', $recette->getId());
+            $sessionRecNom->set('NomRecette', $recette->getNomRecette());
+
+            return $this->redirectToRoute('ListeIngredientRecette');
+
+        }
+
+        return $this->render('projet/editerRecette.html.twig', [
+            'recette' => $recette,
+            'formulaire'=> $form->createView()
+        ]);
+    }
+
+    /** 
+     * @Route("/editerIngredient/{id}", name="ModifIngredient")
+     * @param Ingredient $ingredient
+     */
+    public function editeIngre(Ingredient $ingredient,Request $request, EntityManagerInterface $manager)
+    {
+        $form=$this->createForm(IngredientType::class, $ingredient);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+            $manager->flush();
+            return $this->redirectToRoute('ListeIngredientRecette');
+        }
+        return $this->render('projet/editerIngredient.html.twig', [
+            'ingredients' => $ingredient,
+            'formulaire'=> $form->createView()
+        ]);
+
+       
+    }
+    
+
+     /**
+     * @Route("/listeIngredientRecette", name="ListeIngredientRecette")
+     */
+    public function ListeIngredientRecette(IngredientRepository $repoR)
+    {
+
+        $sessionIngreRec = new Session();
+        $sessionRecNom = new Session();
+        $id= $sessionIngreRec->get('Recette');
+        $nom=$sessionRecNom->get('NomRecette');
+        $ingredients= $repoR->findIngre($id);
+        return $this->render('projet/listeIngredientRecette.html.twig', [
+            'ingredients' => $ingredients,
+            'nom'=>$nom
+        ]);
+    }  
+
 }

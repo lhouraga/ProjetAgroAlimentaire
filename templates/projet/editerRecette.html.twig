@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+{% form_theme formulaire 'bootstrap_4_layout.html.twig' %}
+
+{% block body %}
+
+  
+<section id="about" class="about-mf sect-pt4 route">
+<div id="contact" class="box-shadow-full">
+                  <div class="title-box-2">
+                    <h5 class="title-left">
+                      Editer la recette
+                    </h5>
+                  </div>
+
+{{ form_start(formulaire)}}
+{{ form_row(formulaire.NomRecette, {'attr':{'placeholder':"Entrée le nom de la recette"}})}}
+{{ form_row(formulaire.typeRecette)}}
+{{ form_row(formulaire.preparation, {'attr':{'placeholder':"Peler les tomates et les oignons....."}})}}
+{{ form_row(formulaire.duree, {'attr':{'placeholder':"45min"}})}}
+
+
+
+<button type="submit" class="btn btn-primary">Editer</button>
+
+{{ form_end(formulaire)}}
+</div>
+</section>
+
+
+{% endblock %}

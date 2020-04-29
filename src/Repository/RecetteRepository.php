@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Recette;
+use App\Entity\Ingredient;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
@@ -47,4 +48,19 @@ class RecetteRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    // /**
+    //  * @return Recette[] Returns an array of Recette objects
+    //  */
+    public function findIngre($value)
+    {
+        return $this->createQueryBuilder('r')
+            ->Where('r.id = :val')
+            ->setParameter('val', $value)
+            ->select('i.Aliment','i.QteNecessaire')
+            ->leftJoin('Ingredient', 'i')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

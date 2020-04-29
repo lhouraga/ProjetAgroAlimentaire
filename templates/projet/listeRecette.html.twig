@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="container mt-4">
+<h1> Liste des recettes </h1>
+<div class="row">
+<div class="col-md-8">
+<table class="table table-striped">
+<thead>
+<tr>
+    <th> Nom de la recette</th>
+    <th>photo</th>
+    <th>Action souhaitée</th>
+</tr>
+</thead>
+<tbody>
+  
+ {%   for recette in recettes %}
+   <tr> 
+      <td>{{ recette.NomRecette}} </td>
+       <td>{{ recette.NomRecette}} </td>
+      <td>
+          <div class="float-right">
+          <a href="{{path('AfficherRecette', {id: recette.id})}}" class="btn btn-success"> Afficher </a>
+          <a href="{{path('ModifRecette', {id: recette.id})}}" class="btn btn-primary"> Modifier </a>
+          <a href="{{path('ModifRecette', {id: recette.id})}}" class="btn btn-danger"> Supprimer </a>
+          </div>
+       </td> 
+   
+  </tr>
+  {% endfor %}
+</tbody>
+</table>  
+ </div>
+ </div> 
+</div>
+
+{% endblock %}

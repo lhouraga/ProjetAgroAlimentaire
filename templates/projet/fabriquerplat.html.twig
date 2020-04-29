@@ -3,28 +3,24 @@
 
 {% block body %}
 
-  
 <section id="about" class="about-mf sect-pt4 route">
 <div id="contact" class="box-shadow-full">
                   <div class="title-box-2">
                     <h5 class="title-left">
-                      Nouvelle Recette
+                      Fabriquer le plat
                     </h5>
                   </div>
 
 {{ form_start(formulaireRecette)}}
 {{ form_row(formulaireRecette.NomRecette, {'attr':{'placeholder':"Entrée le nom de la recette"}})}}
 {{ form_row(formulaireRecette.typeRecette)}}
-{{ form_row(formulaireRecette.preparation, {'attr':{'placeholder':"Peler les tomates et les oignons....."}})}}
-{{ form_row(formulaireRecette.duree, {'attr':{'placeholder':"45min"}})}}
 
-
-
-<button type="submit" class="btn btn-primary">Enregistrer</button>
+<button type="submit" class="btn btn-primary">Recherche</button>
 
 {{ form_end(formulaireRecette)}}
 </div>
 </section>
+
 
 
 {% endblock %}

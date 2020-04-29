@@ -22,7 +22,8 @@ class RecetteType extends AbstractType
                 }
    ])
 
-            ->add('duree');
+            ->add('duree')
+            ->add('preparation');
                                 
     }
     public function configureOptions(OptionsResolver $resolver)
