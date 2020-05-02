@@ -38,29 +38,41 @@ class SuppressionController extends AbstractController
      * @Route("/SupprimerRecette/{id}", name="SupprimerRecette")
      * @param Recette $recette
      */
-    public function supprimerRec(Recette $recette,Request $request, EntityManagerInterface $manager)
+    public function supprimerRec(Recette $recette,Request $request, EntityManagerInterface $manager, IngredientRepository $repoR)
     {
         
-        $form=$this->createForm(RecetteType::class, $recette);
-        $form->handleRequest($request);
+            $id=$recette->getId();
+            $ingredients= $repoR->findIngre($id);
 
-        if($form->isSubmitted() && $form->isValid()){
+            foreach($ingredients as $ingredient)
+            {
+              $manager->remove($ingredient);
+              $manager->flush();
+            }
 
+            $manager->remove($recette);
+          
             $manager->flush();
-           // $ingredients= $recette ->getIngredient();
-            $sessionIngreRec = new Session(new NativeSessionStorage(), new AttributeBag());
-            $sessionRecNom = new Session(new NativeSessionStorage(), new AttributeBag());
-            $sessionIngreRec->set('Recette', $recette->getId());
-            $sessionRecNom->set('NomRecette', $recette->getNomRecette());
+            return $this->redirectToRoute('ListeRecette');
 
+    }
+
+    /**
+     * @Route("/SupprimerIngreRecette/{id}", name="SupprimerIngreRecette")
+     * @param Ingredient $ingredient
+     */
+    public function supprimerIngreRec(Ingredient $ingredient,Request $request, EntityManagerInterface $manager, RecetteRepository $repoR)
+    {
+        
+            /*$id=$ingredient->getId();
+            $recette= $repoR->findRecette($id);
+            
+            $recette->removeIngredient($ingredient);*/
+            $manager->remove($ingredient);
+          
+            $manager->flush();
             return $this->redirectToRoute('ListeIngredientRecette');
 
-        }
-
-        return $this->render('suppression/supprimerRecette.html.twig', [
-            'recette' => $recette,
-            'formulaire'=> $form->createView()
-        ]);
     }
 
 

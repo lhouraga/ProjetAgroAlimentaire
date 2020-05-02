@@ -24,7 +24,9 @@
       <td>
           <div class="float-right">
           <a href="{{path('ModifIngredient', {id: ingredient.id})}}" class="btn btn-primary"> Modifier </a>
-          <a href="{{path('ModifIngredient', {id: ingredient.id})}}" class="btn btn-danger"> Supprimer </a>
+          <form method="post" action="{{path('SupprimerIngreRecette', {id: ingredient.id})}}" style="display:inline-block" onSubmit="return confirm('Vous etes sur le point de supprimer un ingredient')" >
+             <button class="btn btn-danger"> Supprimer </button>
+          </form>
           </div>
        </td> 
    

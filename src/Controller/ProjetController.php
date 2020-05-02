@@ -178,7 +178,7 @@ class ProjetController extends AbstractController
             $ingredient->addRecette($recette);
 
 
-            
+            $manager->persist($ingredient);
             $manager->flush();
             
             

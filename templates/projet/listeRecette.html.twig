@@ -23,7 +23,9 @@
           <div class="float-right">
           <a href="{{path('AfficherRecette', {id: recette.id})}}" class="btn btn-success"> Afficher </a>
           <a href="{{path('ModifRecette', {id: recette.id})}}" class="btn btn-primary"> Modifier </a>
-          <a href="{{path('ModifRecette', {id: recette.id})}}" class="btn btn-danger"> Supprimer </a>
+          <form method="post" action="{{path('SupprimerRecette', {id: recette.id})}}" style="display:inline-block" onSubmit="return confirm('etes vous sure de vouloir supprimer cette recette?')" >
+             <button class="btn btn-danger"> Supprimer </button>
+          </form>
           </div>
        </td> 
    

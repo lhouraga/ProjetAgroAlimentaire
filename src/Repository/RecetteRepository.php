@@ -63,4 +63,19 @@ class RecetteRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+
+    // /**
+    //  * @Recette|null
+    //  */
+    public function findRecette($value)
+    {
+        return $this->createQueryBuilder('r')
+            ->leftJoin('r.ingredient', 'i')
+            ->Where('i.id = :val')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
 }

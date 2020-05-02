@@ -43,8 +43,7 @@ class RecetteController extends AbstractController
     {
         $repoI= $this->getDoctrine()->getRepository(Ingredient::class);
 
-        $sessionIngreRec = new Session();
-        $id= $sessionIngreRec->get('Recette');
+        $id= $recette->getId();
         $ingredients= $repoI->findIngre($id);
         return $this->render('affichage/afficherRecette.html.twig', [
             'recette' => $recette,
