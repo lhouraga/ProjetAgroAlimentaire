@@ -16,12 +16,14 @@ use App\Entity\DetailAlimentRecu;
 use App\Entity\Recette;
 use App\Entity\Ingredient;
 use App\Entity\DetailLotRecu;
+use App\Entity\RechercheRecetteNom;
 
 use App\Form\FournisseurType;
 use App\Form\RecetteType;
 use App\Form\DetailLotType;
 use App\Form\IngredientType;
 use App\Form\LotType;
+use App\Form\RechercheRecetteNomType;
 
 use App\Repository\RecetteRepository;
 use App\Repository\IngredientRepository;
@@ -197,9 +199,13 @@ class ProjetController extends AbstractController
     public function ListeRec(RecetteRepository $repoR)
     {
 
+        $Nomrecette=new RechercheRecetteNom(); 
+        $form= $this->createForm(RechercheRecetteNomType::class) ; 
         $recettes= $repoR->findAll();
         return $this->render('projet/listeRecette.html.twig', [
-            'recettes' => $recettes
+            'recettes' => $recettes, 
+            'formulaireRecherche' =>$form->createView()
+            
         ]);
     }
 
@@ -269,6 +275,6 @@ class ProjetController extends AbstractController
             'ingredients' => $ingredients,
             'nom'=>$nom
         ]);
-    }  
+    }   
 
 }

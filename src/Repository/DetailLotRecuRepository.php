@@ -47,4 +47,22 @@ class DetailLotRecuRepository extends ServiceEntityRepository
         ;
     }
     */
+ // /**
+    //  * @return DetailLotRecu[] Returns an array of DetailLotRecu objects
+    //  */
+    public function afficher()
+    {
+        return $this->createQueryBuilder('d')
+            //->Where('d.NomAliment = :val')
+            ->Where('d.QteDispo > :val')
+            ->setParameter('val', 0)
+            ->orderBy('d.DatePeremption', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+   
+
+
+
 }

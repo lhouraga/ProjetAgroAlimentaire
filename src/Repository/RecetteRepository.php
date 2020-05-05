@@ -78,4 +78,17 @@ class RecetteRepository extends ServiceEntityRepository
         ;
     }
 
+    // /**
+    //  * @Recette|null
+    //  */
+    public function Recherche($value)
+    {
+        return $this->createQueryBuilder('r')
+            ->Where('r.NomRecette = :val')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
 }

@@ -1,0 +1,69 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="container mt-4">
+<h1> Détail recette {{ recette.NomRecette}} </h1>
+<div class="row">
+<div class="col-md-12">
+<table class="table table-striped">
+<tbody>
+   <tr> 
+      <td>{{ recette.duree}} </td>
+      <td>{{ recette.NomRecette}} </td>
+       <td>{{ recette.preparation}} </td>
+      <td>
+          <div class="float-right">
+          <a href="{{path('ModifRecette', {id: recette.id})}}" class="btn btn-success"> Préparer </a>
+          <a href="{{path('ModifRecette', {id: recette.id})}}" class="btn btn-primary"> Modifier </a>
+          <form method="post" action="{{path('SupprimerRecette', {id: recette.id})}}" style="display:inline-block" onsubmit="return confirm('etes vous sure de vouloir supprimer cette recette?')">
+          <button class="btn btn-danger"> Supprimer </button>
+          </form>
+          </div>
+       </td> 
+   
+  </tr>
+</tbody>
+</table>  
+ </div>
+
+<div class="col-md-8">
+<h3>Liste des ingrédients nécessaire /pers </h3>
+<table class="table table-striped">
+<thead>
+<tr>
+    <th> Aliment</th>
+    <th>Quantité nécessaire (kg)</th>
+    <th>Prix Unitaire</th>
+    <th class="float-right">Action souhaitée</th>
+</tr>
+</thead>
+<tbody>
+  
+ {%   for ingredient in ingredients %}
+   <tr> 
+       <td>{{ ingredient.Aliment}} </td>
+       <td>{{ ingredient.QteNecessaire}} </td>
+       <td>{{ ingredient.PrixUnitaire}} </td>
+      <td>
+          <div class="float-right">
+          <a href="{{path('DisponibiliteAliment', {id: ingredient.id})}}" class="btn btn-primary"> Disponibilité </a>
+          </div>
+       </td> 
+   
+  </tr>
+  {% endfor %}
+</tbody>
+</table>  
+ </div>
+<div class="col-md-4">
+<img src="{{asset('img/strawberry.webp')}}" width="450" heigth="450">
+</div>
+ </div> 
+</div>
+
+<form method="post" action="{{path('DisponibiliteAliment')}}" style="display:inline-block" >
+            <input type="text" name="nombrePlat" class="form-control mr-sm-2" placeholder="Nombre de plat entre 0 et 100"/>
+            <button class="btn btn-danger"> Voir disponibilité </button>
+</form>
+
+{% endblock %}

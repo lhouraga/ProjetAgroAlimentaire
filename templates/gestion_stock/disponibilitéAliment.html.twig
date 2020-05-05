@@ -1,1 +1,40 @@
 {% extends 'base.html.twig' %}
+
+
+{% block body %}
+<div class="col-md-8">
+<h3>Liste des ingrédients nécessaire /pers </h3>
+<table class="table table-striped">
+<thead>
+<tr>
+    <th>Nom Aliment</th>
+    <th>Quantité Disponible (kg)</th>
+    <th>Date Peremption</th>
+    <th class="float-right">Action souhaitée</th>
+</tr>
+</thead>
+<tbody>
+  
+ {%   for aliment in aliments %}
+   <tr> 
+       <td>{{ aliment.NomAliment}} </td>
+       <td>{{ aliment.QteDispo}} </td>
+       <td>{{ aliment.DatePeremption|date('d/m/Y')}} </td>
+      <td>
+          <div class="float-right">
+          <a href="{{path('DisponibiliteAliment')}}" class="btn btn-primary"> Disponibilité </a>
+          </div>
+       </td> 
+   
+  </tr>
+  {% endfor %}
+</tbody>
+</table>  
+ </div>
+<div class="col-md-4">
+<img src="{{asset('img/strawberry.webp')}}" width="450" heigth="450">
+</div>
+ </div> 
+</div>
+
+{% endblock %}
