@@ -2,7 +2,14 @@
 {% extends 'base.html.twig' %}
 {% form_theme formulaire 'bootstrap_4_layout.html.twig' %}
 {% block body %}
+{% if succes%}
 
+<div class="title-box-2">
+                    <h5 class="title-left">
+                      Le fournisseur a été enregistré.
+                    </h5>
+                  </div>
+{% endif %}
 <section id="about" class="about-mf sect-pt4 route">
 <div id="contact" class="box-shadow-full">
                   <div class="title-box-2">

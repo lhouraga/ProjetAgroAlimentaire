@@ -38,7 +38,7 @@ class SuppressionController extends AbstractController
      * @Route("/SupprimerRecette/{id}", name="SupprimerRecette")
      * @param Recette $recette
      */
-    public function supprimerRec(Recette $recette,Request $request, EntityManagerInterface $manager, IngredientRepository $repoR)
+    public function supprimerRec(Recette $recette, IngredientRepository $repoR,Request $request, EntityManagerInterface $manager)
     {
         
             $id=$recette->getId();
@@ -61,7 +61,7 @@ class SuppressionController extends AbstractController
      * @Route("/SupprimerIngreRecette/{id}", name="SupprimerIngreRecette")
      * @param Ingredient $ingredient
      */
-    public function supprimerIngreRec(Ingredient $ingredient,Request $request, EntityManagerInterface $manager, RecetteRepository $repoR)
+    public function supprimerIngreRec(Ingredient $ingredient, RecetteRepository $repoR, Request $request, EntityManagerInterface $manager)
     {
         
             /*$id=$ingredient->getId();

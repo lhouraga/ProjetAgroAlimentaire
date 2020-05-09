@@ -1,11 +1,10 @@
 <?php
 
 namespace App\DataFixtures;
+use App\Entity\TypeRecette;
 
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
-use App\Entity\TypeRecette;
-
 
 class TypeRecetteFixtures extends Fixture
 {
@@ -13,6 +12,7 @@ class TypeRecetteFixtures extends Fixture
     {
         // $product = new Product();
         // $manager->persist($product);
+
         $type1 = new TypeRecette();
          $type1 ->setLibelle("Entrée");
          $manager->persist($type1);

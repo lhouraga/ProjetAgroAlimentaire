@@ -47,4 +47,18 @@ class FournisseurRepository extends ServiceEntityRepository
         ;
     }
     */
+
+// /**
+    //  * @return Fournisseur|null 
+    //  */
+    public function findFournisseurLot($value)
+    {
+        return $this->createQueryBuilder('f')
+            ->leftJoin('f.lots','l')
+            ->Where('l.id = :val')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

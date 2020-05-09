@@ -29,12 +29,7 @@ class Ingredient
     private $QteNecessaire;
 
     /**
-     * @ORM\Column(type="float")
-     */
-    private $PrixUnitaire;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Recette", mappedBy="ingredient")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Recette", inversedBy="ingredients")
      */
     private $recettes;
 
@@ -72,18 +67,6 @@ class Ingredient
         return $this;
     }
 
-    public function getPrixUnitaire(): ?float
-    {
-        return $this->PrixUnitaire;
-    }
-
-    public function setPrixUnitaire(float $PrixUnitaire): self
-    {
-        $this->PrixUnitaire = $PrixUnitaire;
-
-        return $this;
-    }
-
     /**
      * @return Collection|Recette[]
      */
@@ -96,7 +79,6 @@ class Ingredient
     {
         if (!$this->recettes->contains($recette)) {
             $this->recettes[] = $recette;
-            $recette->addIngredient($this);
         }
 
         return $this;
@@ -106,7 +88,6 @@ class Ingredient
     {
         if ($this->recettes->contains($recette)) {
             $this->recettes->removeElement($recette);
-            $recette->removeIngredient($this);
         }
 
         return $this;

@@ -26,11 +26,11 @@ class TypeRecette
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Recette", mappedBy="typeRecette")
      */
-    private $recette;
+    private $recettes;
 
     public function __construct()
     {
-        $this->recette = new ArrayCollection();
+        $this->recettes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -53,15 +53,15 @@ class TypeRecette
     /**
      * @return Collection|Recette[]
      */
-    public function getRecette(): Collection
+    public function getRecettes(): Collection
     {
-        return $this->recette;
+        return $this->recettes;
     }
 
     public function addRecette(Recette $recette): self
     {
-        if (!$this->recette->contains($recette)) {
-            $this->recette[] = $recette;
+        if (!$this->recettes->contains($recette)) {
+            $this->recettes[] = $recette;
             $recette->setTypeRecette($this);
         }
 
@@ -70,8 +70,8 @@ class TypeRecette
 
     public function removeRecette(Recette $recette): self
     {
-        if ($this->recette->contains($recette)) {
-            $this->recette->removeElement($recette);
+        if ($this->recettes->contains($recette)) {
+            $this->recettes->removeElement($recette);
             // set the owning side to null (unless already changed)
             if ($recette->getTypeRecette() === $this) {
                 $recette->setTypeRecette(null);

@@ -2,39 +2,145 @@
 
 
 {% block body %}
-<div class="col-md-8">
-<h3>Liste des ingrédients nécessaire /pers </h3>
-<table class="table table-striped">
-<thead>
-<tr>
+<div class="container mt-4">
+<div class="row">
+<div class="col-md-4">
+  <h3>Quantité nécessaire pour les {{ nb }} plats (kg) </h3>
+  <table class="table table-striped">
+  <thead>
+   <tr>
     <th>Nom Aliment</th>
-    <th>Quantité Disponible (kg)</th>
-    <th>Date Peremption</th>
-    <th class="float-right">Action souhaitée</th>
-</tr>
-</thead>
-<tbody>
+    <th>Quantité Nécessaire (kg)</th>
+  </tr>
+ </thead>
+ <tbody>
   
- {%   for aliment in aliments %}
+ {%   for aliment in ingredients %}
    <tr> 
-       <td>{{ aliment.NomAliment}} </td>
-       <td>{{ aliment.QteDispo}} </td>
-       <td>{{ aliment.DatePeremption|date('d/m/Y')}} </td>
-      <td>
-          <div class="float-right">
-          <a href="{{path('DisponibiliteAliment')}}" class="btn btn-primary"> Disponibilité </a>
-          </div>
-       </td> 
+       <td>{{ aliment.Aliment}} </td>
+       <td>{{ aliment.QteNecessaire * nb}} </td>
    
   </tr>
   {% endfor %}
 </tbody>
 </table>  
- </div>
-<div class="col-md-4">
-<img src="{{asset('img/strawberry.webp')}}" width="450" heigth="450">
 </div>
- </div> 
+<div class="col-md-8">
+<h3>Quantités disponible en stock</h3>
+<table class="table table-striped">
+<thead>
+<tr>
+    <th>Aliment</th>
+    <th>Quantité disponible</th>
+    <th>DatePeremption</th>
+    
+</tr>
+</thead>
+<tbody>
+
+{%   for ingredient in IngreNecessaire %}
+   <tr> 
+       <td>{{ ingredient.NomAliment}} </td>
+       <td>{{ ingredient.QteDispo}} </td>
+       <td>{{ ingredient.DatePeremption|date('d/m/Y')}} </td>
+   
+  </tr>
+  {% endfor %}
+
+</tbody>
+</table> 
+</div>
+</div>
+<div class="row">
+<div class="col-md-4">
+{% if Manque is not null %}
+
+<div class="float-right">
+<h5>Aliment manquant en stock</h5>
+<table class="table table-striped">
+<thead>
+<tr class="table-danger">
+    <th scope="row">Aliment</th>
+    
+</tr>
+</thead>
+<tbody>
+
+{%   for ingredient in Manque %}
+   <tr> 
+       <td>{{ ingredient.Aliment}} </td>
+  </tr>
+  {% endfor %}
+
+</tbody>
+</table> 
+</div>
+{% endif  %}
 </div>
 
+<div class="col-md-4">
+{% if IngreInsuffisant is not null %}
+
+<div class="float-left">
+<h5>Aliment en Quantité insuffisante en stock </h5>
+<table class="table table-striped">
+<thead>
+<tr class="table-warning">
+    <th scope="row">Aliment</th>
+   
+</tr>
+</thead>
+<tbody>
+
+{%   for ingredient in IngreInsuffisant %}
+   <tr> 
+       <td>{{ ingredient.Aliment}} </td>
+  </tr>
+  {% endfor %}
+
+</tbody>
+</table> 
+</div>
+{% endif  %}
+</div>
+
+<div class="col-md-4">
+{% if IngreInsuffisantNombre is not null %}
+
+<div>
+<h5>*********************************</h5>
+<table class="table table-striped">
+<thead>
+<tr class="table-warning">
+    <th scope="row">Quantité Manquante</th>
+    
+</tr>
+</thead>
+<tbody>
+
+{%   for ingredient in IngreInsuffisantNombre %}
+   <tr> 
+       <td>{{ ingredient}} </td>
+  </tr>
+  {% endfor %}
+
+</tbody>
+</table> 
+</div>
+{% endif  %}
+</div>
+ </div>
+
+<div class="col-md-4">
+{% if Manque is not null %}
+<p>Nous vous aurions bien proposé</p>
+<p>La fabricaton d'un nombre réduit de plats</p>
+<p>Mais certains aliments ne sont pas disponibles</p>
+<a href="{{path('ListeRecette')}}" class="btn btn-success"> Retour à la liste </a>
+
+{% else %}
+<a href="{{path('ListeRecette')}}" class="btn btn-success"> Retour à la liste </a>
+{% endif  %}
+</div>
+</div>
 {% endblock %}

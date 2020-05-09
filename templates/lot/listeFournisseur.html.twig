@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+<div class="container mt-4">
+<h1> Liste de nos fournisseurs </h1>
+<div class="row">
+<div class="col-md-8">
+<table class="table table-striped">
+<thead>
+<tr>
+    <th> Société</th>
+    <th>Action souhaitée</th>
+</tr>
+</thead>
+<tbody>
+  
+ {%   for fournisseur in fournisseurs %}
+   <tr> 
+      <td>{{ fournisseur.societe}} </td>
+      <td>
+          <div class="float-right">
+          <a href="{{path('infosFournisseur', {id: fournisseur.id})}}" class="btn btn-success"> +Infos </a>
+          <form method="post" action="#" style="display:inline-block" onSubmit="return confirm('etes vous sure de vouloir supprimer cette recette?')" >
+             <button class="btn btn-danger"> Supprimer </button>
+          </form>
+          </div>
+       </td> 
+   
+  </tr>
+  {% endfor %}
+</tbody>
+</table>  
+ </div>
+ </div> 
+</div>
+
+{% endblock %}

@@ -33,7 +33,7 @@
 <tr>
     <th> Aliment</th>
     <th>Quantité nécessaire (kg)</th>
-    <th>Prix Unitaire</th>
+    
     <th class="float-right">Action souhaitée</th>
 </tr>
 </thead>
@@ -43,7 +43,7 @@
    <tr> 
        <td>{{ ingredient.Aliment}} </td>
        <td>{{ ingredient.QteNecessaire}} </td>
-       <td>{{ ingredient.PrixUnitaire}} </td>
+       
       <td>
           <div class="float-right">
           <a href="{{path('DisponibiliteAliment', {id: ingredient.id})}}" class="btn btn-primary"> Disponibilité </a>
@@ -61,7 +61,7 @@
  </div> 
 </div>
 
-<form method="post" action="{{path('DisponibiliteAliment')}}" style="display:inline-block" >
+<form method="post" action="{{path('DisponibiliteAliment', {ingredientTOUT: ingredients})}}" style="display:inline-block" >
             <input type="text" name="nombrePlat" class="form-control mr-sm-2" placeholder="Nombre de plat entre 0 et 100"/>
             <button class="btn btn-danger"> Voir disponibilité </button>
 </form>

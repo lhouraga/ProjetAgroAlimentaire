@@ -63,6 +63,35 @@ class DetailLotRecuRepository extends ServiceEntityRepository
     }
    
 
+    // /**
+    //  * @return DetailLotRecu[] Returns an array of DetailLotRecu objects
+    //  */
+    public function afficherTout($value)
+    {
+        return $this->createQueryBuilder('d')
+            ->Where('d.NomAliment = :val1')
+            ->andWhere('d.QteDispo > :val')
+            ->setParameter('val', 0)
+            ->setParameter('val1', $value)
+            ->orderBy('d.DatePeremption', 'ASC')
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+   
+     // /**
+    //  * @return DetailLotRecu[] Returns an array of DetailLotRecu objects
+    //  */
+    public function findDetailLot($value)
+    {
+        return $this->createQueryBuilder('d')
+            ->leftJoin('d.lot','l')
+            ->Where('l.id = :val')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 
 
 }

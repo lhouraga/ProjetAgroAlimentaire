@@ -37,8 +37,18 @@
           <li class="nav-item">
               <a class="nav-link" href="/">Accueil</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/lot">Lots</a>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="download">Lot <span class="caret"></span></a>
+              <div class="dropdown-menu" aria-labelledby="download">
+                <a class="dropdown-item" href="/fournisseur">Ajouter un fournisseur</a>
+             <div class="dropdown-divider" aria-labelledby="themes"></div>
+                <a class="dropdown-item" href="/listeFournisseur">Liste des fournisseurs</a> 
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="/lot">Nouveau lot recu</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="/listeLot">Liste des lots</a>
+               
+              </div>
             </li>
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="themes">Recettes <span class="caret"></span></a>

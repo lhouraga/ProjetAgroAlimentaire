@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Session\Storage\PhpBridgeSessionStorage;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 use App\Entity\Recette;
@@ -47,6 +48,7 @@ class RecetteController extends AbstractController
 
         $id= $recette->getId();
         $ingredients= $repoI->findIngre($id);
+        
         return $this->render('affichage/afficherRecette.html.twig', [
             'recette' => $recette,
             'ingredients'=>$ingredients
@@ -82,6 +84,22 @@ class RecetteController extends AbstractController
         $recette= $repoL->findOneBy(['NomRecette'=>$nom]);
         $id=$recette->getId();
         $ingredients= $repoI->findIngre($id);
+        dump($nom);
+
+       // $sessiontout = new Session(new NativeSessionStorage(), new AttributeBag());
+       $sessiontout = $this->get('session')->get('ToutIngre');
+        $sessiontout=array();
+        $sessiontout[]=$ingredients;
+
+        $this->get('session')->set('ToutIngre',$sessiontout);
+
+        $session2 = new Session(new NativeSessionStorage(), new AttributeBag());
+       
+       // foreach($ingredients as $ingredient){
+        //$sessiontout->set('ToutIngre', $ingredients);
+        //   $i++;
+       // }
+        $session2->set('nombre', $id);
         return $this->render('affichage/afficherRechercheRecette.html.twig', [
             'recette' => $recette,
             'ingredients'=>$ingredients

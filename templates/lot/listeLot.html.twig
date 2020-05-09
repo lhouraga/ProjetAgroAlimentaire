@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+<div class="container mt-4">
+<h1> Liste des lots </h1>
+<div class="row">
+<div class="col-md-8">
+<table class="table table-striped">
+<thead>
+<tr>
+    <th> Lot</th>
+    <th>Date de reception</th>
+    <th>Action souhaitée</th>
+</tr>
+</thead>
+<tbody>
+  
+ {%   for lot in lots %}
+   <tr> 
+      <td>Lot {{ lot.id}} </td>
+       <td>{{ lot.DateReception |date('d/m/Y')}} </td>
+      <td>
+          <div class="float-right">
+          <a href="{{path('AfficherDetailLot', {id: lot.id})}}" class="btn btn-success"> Detail Lot </a>
+          <form method="post" action="{{path('AfficherDetailLot', {id: lot.id})}}" style="display:inline-block" onSubmit="return confirm('etes vous sure de vouloir supprimer cette recette?')" >
+             <button class="btn btn-danger"> Supprimer </button>
+          </form>
+          </div>
+       </td> 
+   
+  </tr>
+  {% endfor %}
+</tbody>
+</table>  
+ </div>
+ </div> 
+</div>
+
+{% endblock %}

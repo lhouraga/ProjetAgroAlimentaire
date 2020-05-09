@@ -3,7 +3,6 @@
 namespace App\Repository;
 
 use App\Entity\Recette;
-use App\Entity\Ingredient;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 

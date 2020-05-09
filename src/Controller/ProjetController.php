@@ -58,16 +58,21 @@ class ProjetController extends AbstractController
         $form= $this->createForm(FournisseurType::class,$fourni) ;  
         
         $form->handleRequest($request);
+        $succes=false;
         if($form->isSubmitted() && $form->isValid()){
 
             $manager->persist($fourni);
             $manager->flush();
 
-            return $this->redirectToRoute('fournisseur');
+            $succes=true;
+            return $this->redirectToRoute('fournisseur',[
+            'succes'=>$succes
+            ]);
         }
 
         return $this->render('projet/fournisseur.html.twig', [
-            'formulaire' =>$form->createView()
+            'formulaire' =>$form->createView(),
+            'succes'=>$succes
         ]);
     }
 

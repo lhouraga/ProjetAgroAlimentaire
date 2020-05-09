@@ -29,24 +29,24 @@ class Recette
     private $duree;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\TypeRecette", inversedBy="recette")
+     * @ORM\Column(type="text")
+     */
+    private $preparation;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Ingredient", mappedBy="recettes")
+     */
+    private $ingredients;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\TypeRecette", inversedBy="recettes")
      * @ORM\JoinColumn(nullable=false)
      */
     private $typeRecette;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Ingredient", inversedBy="recettes")
-     */
-    private $ingredient;
-
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $preparation;
-
     public function __construct()
     {
-        $this->ingredient = new ArrayCollection();
+        $this->ingredients = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -78,6 +78,46 @@ class Recette
         return $this;
     }
 
+    public function getPreparation(): ?string
+    {
+        return $this->preparation;
+    }
+
+    public function setPreparation(string $preparation): self
+    {
+        $this->preparation = $preparation;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Ingredient[]
+     */
+    public function getIngredients(): Collection
+    {
+        return $this->ingredients;
+    }
+
+    public function addIngredient(Ingredient $ingredient): self
+    {
+        if (!$this->ingredients->contains($ingredient)) {
+            $this->ingredients[] = $ingredient;
+            $ingredient->addRecette($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIngredient(Ingredient $ingredient): self
+    {
+        if ($this->ingredients->contains($ingredient)) {
+            $this->ingredients->removeElement($ingredient);
+            $ingredient->removeRecette($this);
+        }
+
+        return $this;
+    }
+
     public function getTypeRecette(): ?TypeRecette
     {
         return $this->typeRecette;
@@ -86,44 +126,6 @@ class Recette
     public function setTypeRecette(?TypeRecette $typeRecette): self
     {
         $this->typeRecette = $typeRecette;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Ingredient[]
-     */
-    public function getIngredient(): Collection
-    {
-        return $this->ingredient;
-    }
-
-    public function addIngredient(Ingredient $ingredient): self
-    {
-        if (!$this->ingredient->contains($ingredient)) {
-            $this->ingredient[] = $ingredient;
-        }
-
-        return $this;
-    }
-
-    public function removeIngredient(Ingredient $ingredient): self
-    {
-        if ($this->ingredient->contains($ingredient)) {
-            $this->ingredient->removeElement($ingredient);
-        }
-
-        return $this;
-    }
-
-    public function getPreparation(): ?string
-    {
-        return $this->preparation;
-    }
-
-    public function setPreparation(?string $preparation): self
-    {
-        $this->preparation = $preparation;
 
         return $this;
     }
