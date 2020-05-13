@@ -1,14 +1,6 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-
-
-<form method="post" action="{{path('RechercheRecette')}}" style="display:inline-block" >
-            <input type="text" name="nomRec" class="form-control mr-sm-2"/><br/>
-            <button class="btn btn-danger"> Recherche </button>
-</form>
-
-
 <div class="container mt-4">
 <h1> Liste des recettes </h1>
 <div class="row">
@@ -22,16 +14,13 @@
 </tr>
 </thead>
 <tbody>
-  
- {%   for recette in recettes %}
    <tr> 
       <td>{{ recette.NomRecette}} </td>
-       <td><img src="img/{{ recette.id}}.webp" width="80" heigth="80">
- </td>
+       <td>{{ recette.NomRecette}} </td>
       <td>
           <div class="float-right">
           <a href="{{path('AfficherRecette', {id: recette.id})}}" class="btn btn-success"> Afficher </a>
-          <a href="{{path('AfficherRechercheRecette', {id: recette.id})}}" class="btn btn-secondary"> Préparer </a>
+          <a href="{{path('prepaRecette', {id: recette.id})}}" class="btn btn-secondary"> Préparer </a>
           <a href="{{path('ModifRecette', {id: recette.id})}}" class="btn btn-primary"> Modifier </a>
           <form method="post" action="{{path('SupprimerRecette', {id: recette.id})}}" style="display:inline-block" onSubmit="return confirm('etes vous sure de vouloir supprimer cette recette?')" >
              <button class="btn btn-danger"> Supprimer </button>
@@ -40,7 +29,6 @@
        </td> 
    
   </tr>
-  {% endfor %}
 </tbody>
 </table>  
  </div>

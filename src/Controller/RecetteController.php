@@ -64,42 +64,49 @@ class RecetteController extends AbstractController
 
             $session = new Session(new NativeSessionStorage(), new AttributeBag());
             $session->set('NomRec', $_POST['nomRec']);
-            return $this->redirectToRoute('AfficherRechercheRecette');
+            return $this->redirectToRoute('ResultatRechercheRecette');
+        
+     } 
+
+
+     /**
+     * @Route("/resultatRcherche", name="ResultatRechercheRecette")
+     */
+    public function ResultatRechercheRecette(RecetteRepository $repoR,Request $request, EntityManagerInterface $manager)
+    {
+
+        //$repoL= $this->getDoctrine()->getRepository(Recette::class);
+
+            $session = new Session();
+        //$id= $sessionIngreRec->get('Recette');
+            $nom=$session->get('NomRec');
+            $recette= $repoR->findOneBy(['NomRecette'=>$nom]);
+            return $this->render('affichage/afficherResultatRecherche.html.twig', [
+                'recette' => $recette
+                
+            ]);
         
      } 
 
     /**
-     * @Route("/afficherRechercheRecette", name="AfficherRechercheRecette")
-     * 
+     * @Route("/afficherRechercheRecette/{id}", name="AfficherRechercheRecette")
+     * @param Recette $recette
      */
-    public function afficherRechercheRec()
+    public function afficherRechercheRec(Recette $recette)
     {
         $repoI= $this->getDoctrine()->getRepository(Ingredient::class);
         $repoL= $this->getDoctrine()->getRepository(Recette::class);
 
        // $sessionIngreRec = new Session();
-        $sessionRecNom = new Session();
+        //$sessionRecNom = new Session();
         //$id= $sessionIngreRec->get('Recette');
-        $nom=$sessionRecNom->get('NomRec');
-        $recette= $repoL->findOneBy(['NomRecette'=>$nom]);
-        $id=$recette->getId();
+       // $nom=$sessionRecNom->get('NomRec');
+        $id= $recette->getId();
         $ingredients= $repoI->findIngre($id);
-        dump($nom);
-
-       // $sessiontout = new Session(new NativeSessionStorage(), new AttributeBag());
-       $sessiontout = $this->get('session')->get('ToutIngre');
-        $sessiontout=array();
-        $sessiontout[]=$ingredients;
-
-        $this->get('session')->set('ToutIngre',$sessiontout);
-
+        //$recette= $repoL->findOneBy(['NomRecette'=>$nom]);
+        //dump($nom);
         $session2 = new Session(new NativeSessionStorage(), new AttributeBag());
-       
-       // foreach($ingredients as $ingredient){
-        //$sessiontout->set('ToutIngre', $ingredients);
-        //   $i++;
-       // }
-        $session2->set('nombre', $id);
+        $session2->set('idRecetteP', $id);
         return $this->render('affichage/afficherRechercheRecette.html.twig', [
             'recette' => $recette,
             'ingredients'=>$ingredients

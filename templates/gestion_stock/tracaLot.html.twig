@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="container mt-4">
+
+<h5>ENsemble de plats préparés avec le lot {{lot}} du fournisseur {{fourni.societe}} </h5>
+<div class="row">
+<div class="col-md-8">
+<table class="table table-striped">
+<thead>
+<tr>
+    <th> Nom du plat</th>
+    <th>Nombre</th>
+    <th>Date de preparation</th>
+</tr>
+</thead>
+<tbody>
+  
+ {% for plat in plats %}
+   <tr>
+       
+      
+       <td>{{plat.NomPlat}} </td>
+       <td>{{plat.NbrePlat}} </td>
+       <td>{{plat.DatePrepare |date('d/m/Y')}} </td>
+  </tr>
+  {% endfor %}
+</tbody>
+</table> 
+</div>
+ </div>
+</div>
+<div class="float-right">
+          <form method="post" action="{{path('ListeLot')}}"  >
+             <button class="btn btn-success"> OK </button>
+          </form>
+          </div>
+</div>
+{% endblock %}

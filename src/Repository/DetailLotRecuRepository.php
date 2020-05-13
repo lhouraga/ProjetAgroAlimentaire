@@ -93,5 +93,21 @@ class DetailLotRecuRepository extends ServiceEntityRepository
         ;
     }
 
+    // /**
+    //  * @return DetailLotRecu[] Returns an array of DetailLotRecu objects
+    //  */
+    public function findAlimentUtilise($value)
+    {
+        return $this->createQueryBuilder('d')
+            ->leftJoin('d.platPrepares','p')
+            ->Where('p.id = :val')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    
+
 
 }

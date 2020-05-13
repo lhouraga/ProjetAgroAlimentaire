@@ -72,6 +72,7 @@ class LotController extends AbstractController
         $four= $repoF->findOneBy(['id'=>$idFour]);
 
         $detail= $repoD->findDetailLot($id);
+        
       //  $nomFour=$fournisseur->getSociete();
         dump($four);
         

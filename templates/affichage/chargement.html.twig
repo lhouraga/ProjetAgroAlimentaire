@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+<div class="col-md-4">
+<img src="{{asset('img/load1.jpg')}}" width="450" heigth="450">
+</div>
+
+<div class="float-right">
+          <form method="post" action="{{path('accueil')}}"  >
+             <button class="btn btn-success"> OK </button>
+          </form>
+          </div>
+ </div>
+{% endblock %}

@@ -16,6 +16,7 @@ use App\Entity\DetailAlimentRecu;
 use App\Entity\Recette;
 use App\Entity\Ingredient;
 use App\Entity\DetailLotRecu;
+use App\Entity\PlatPrepare;
 
 use App\Form\FournisseurType;
 use App\Form\RecetteType;
@@ -26,12 +27,13 @@ use App\Form\LotType;
 use App\Repository\RecetteRepository;
 use App\Repository\IngredientRepository;
 use App\Repository\DetailLotRecuRepository;
+use App\Repository\PlatPrepareRepository;
 use Symfony\Component\HttpFoundation\Request;
 
 class PreparationController extends AbstractController
 {
     /**
-     * @Route("/preparation", name="preparation")
+     * @Route("/prepa", name="preparationIndex")
      */
     public function index()
     {
@@ -52,26 +54,37 @@ class PreparationController extends AbstractController
     public function DispoIngredient()
     {
         $repoI= $this->getDoctrine()->getRepository(Ingredient::class);
+        $repoR= $this->getDoctrine()->getRepository(Recette::class);
        
        $i=1;
        $j=1;
-       $ingreManque=array();
-       $ingreInsuff=array();
-       $ingreSuff=array();
+       $ingreManque=null;
+       $ingreInsuff=null;
+       $ingreInsuffN=null;
+       $ingreSuff=null;
 
-
+      //declaration des variables session dont on a besoin
        $sessionToutIngre = new Session();
        $session2 = new Session();
-       $id= $session2->get('nombre');
-       $ingredients= $repoI->findIngre($id);
+       $idrec= $session2->get('idRecetteP');
+       $ingredients= $repoI->findIngre($idrec);
 
-      
+       //recuperer le nom de la recette pour renseigner le plat
+       $nomR=$repoR->findOneBy(['id'=>$idrec]);
        dump( $ingredients);
-        
+       $sessionNomPlat = new Session(new NativeSessionStorage(), new AttributeBag());
+       $sessionNomPlat->set('NomPlat', $nomR->getNomRecette());
+
+
+       //recuperer le nombre de plat pour renseigner le plat
+       $sessionNbPlat = new Session(new NativeSessionStorage(), new AttributeBag());
+       $sessionNbPlat->set('NbPlat', $_POST['nombrePlat']);
         $nombre=$_POST['nombrePlat'];
+
         $repoL= $this->getDoctrine()->getRepository(DetailLotRecu::class);
         $aliments=$repoL->afficher();
        
+        // Recherche des ingredients dans la base de données
         foreach($ingredients as $ingre ){
             $test=$repoL->afficherTout($ingre->getAliment());
         if($test != null){
@@ -88,9 +101,11 @@ class PreparationController extends AbstractController
             $test2=$repoL->afficherTout($ingre->getAliment());
         if($test2 != null){
             $test3=$test2->getQteDispo();
-            if($test3== $nombre * $ingre->getQteNecessaire())
+            if($test3 < $nombre * $ingre->getQteNecessaire())
             {
-                $ingreCritique[]=$test2;
+                $ingreInsuffN[]=($nombre *$ingre->getQteNecessaire())- $test3;
+                $ingreInsuff[]=$ingre;
+                
             }
 
             if($test3 > $nombre * $ingre->getQteNecessaire())
@@ -98,15 +113,21 @@ class PreparationController extends AbstractController
                 $ingreSuff[]=$test2;
             }
             else{
-                $ingreInsuffN[]=($nombre *$ingre->getQteNecessaire())- $test3;
-                $ingreInsuff[]=$ingre;
+                $ingreCritique[]=$test2;
             } 
         }
         }
 
+        //test 
+        $sessiontest = new Session(new NativeSessionStorage(), new AttributeBag());
+        $sessiontest->set('test', $ingreSuff);
+
+        $sessiontestNec = new Session(new NativeSessionStorage(), new AttributeBag());
+        $sessiontestNec->set('testNec', $ingredients);
 
         dump($ingreTout);
         dump($ingreManque);
+        dump($sessiontest);
         
         return $this->render('gestion_stock/disponibilitéAliment.html.twig',[
             'aliments'=> $aliments,
@@ -127,8 +148,95 @@ class PreparationController extends AbstractController
     /**
      * @Route("/listePlats", name="platsPrepares")
      */
-    public function ListePlats()
+    public function ListePlats(PlatPrepareRepository $repoR)
     {
-        return $this->render('preparation/ListePlat.html.twig');
+
+        $plats= $repoR->findAll();
+        return $this->render('preparation/ListePlat.html.twig', [
+            'plats' => $plats
+            
+        ]);
+        
+    }
+
+
+    /**
+     * @Route("/preparation", name="preparation")
+     */
+    public function preparationP(EntityManagerInterface $manager)
+    {
+        $repoL= $this->getDoctrine()->getRepository(DetailLotRecu::class);
+        
+        $platPrep=new PlatPrepare();
+        $detAliment=new DetailLotRecu();
+        $prix=0;
+
+        $sessiontest = new Session();
+        $sessiontestNec = new Session();
+        $sessionNbPlat = new Session();
+        $sessionNomPlat= new Session();
+        $alis= $sessiontest->get('test');
+        $alisNec= $sessiontestNec->get('testNec');
+        $nomPlat=$sessionNomPlat->get('NomPlat');
+        $nb=$sessionNbPlat->get('NbPlat');
+        dump($alis);
+        dump($alisNec);
+
+        $platPrep->setNomPlat($nomPlat)
+                 ->setNbrePlat($nb)
+                 ->setDatePrepare(new \DateTime());
+        
+            $manager->persist($platPrep);
+            $manager->flush();
+                 
+        foreach($alis as $ingre ){
+               
+               $id=$ingre->getId();
+               $detAliment=$repoL->findOneBy(['id'=>$id]);
+               $QteUtilise=$detAliment->getQteUtilise();
+               $QteDispo=$detAliment->getQteDispo();
+               foreach($alisNec as $necessaire) {
+                   $test=$ingre->getNomAliment();
+                   if($test === $necessaire->getAliment()){
+                       $QteUtilise=$QteUtilise + ($necessaire->getQteNecessaire() * $nb);
+                       $QteDispo=$QteDispo - ($necessaire->getQteNecessaire() * $nb);
+                      // $rec=$ingre->getQteDispo();
+                      //$detAliment->setQteDispo($rec - ($necessaire->getQteNecessaire() * $nb));
+                     // $detAliment=$ingre;
+                      //$platPrep->addAlimentUtilise($detAliment);
+                      //$detAliment->addPlatPrepare($platPrep);
+                   }
+                   $platPrep->addAlimentsUtilise($detAliment);
+                   $detAliment->setQteDispo($QteDispo);
+                   $detAliment->setQteUtilise($QteUtilise);  
+                   $detAliment->addPlatPrepare($platPrep);
+                   $manager->flush();
+               }
+               $prix=$prix * ($ingre->getPrixUnitaire() * $nb);
+            }
+            $platPrep->setPrixTotal($prix);
+            $manager->flush();
+            
+            return $this->redirectToRoute('chargement');
+        }
+
+    /**
+     * @Route("/afficherPlat{id}", name="afficherPlat")
+     *  @param PlatPrepare $plat
+     */
+    public function AfficherPlat(PlatPrepareRepository $repoR, PlatPrepare $plat)
+    {
+
+        $repoI= $this->getDoctrine()->getRepository(DetailLotRecu::class);
+
+        $id= $plat->getId();
+        $detailLot= $repoI->findAlimentUtilise($id);
+        
+        return $this->render('affichage/afficherPlat.html.twig', [
+            'plat' => $plat,
+            'aliments'=>$detailLot
+            
+        ]);
+        
     }
 }

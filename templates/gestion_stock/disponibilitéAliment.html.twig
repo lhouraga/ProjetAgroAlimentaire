@@ -142,5 +142,13 @@
 <a href="{{path('ListeRecette')}}" class="btn btn-success"> Retour à la liste </a>
 {% endif  %}
 </div>
+{% if Manque is null %}
+  {% if IngreInsuffisant is null %}
+    <div class="col-md-4">
+          <a href="{{path('preparation')}}" class="btn btn-success"> Lancer la préparation </a>
+    </div>
+
+  {% endif  %}
+{% endif  %}
 </div>
 {% endblock %}

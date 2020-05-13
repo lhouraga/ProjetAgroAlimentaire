@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -57,6 +59,16 @@ class DetailLotRecu
      * @ORM\JoinColumn(nullable=false)
      */
     private $typeAliment;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\PlatPrepare", mappedBy="AlimentsUtilise")
+     */
+    private $platPrepares;
+
+    public function __construct()
+    {
+        $this->platPrepares = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -156,6 +168,34 @@ class DetailLotRecu
     public function setTypeAliment(?TypeAliment $typeAliment): self
     {
         $this->typeAliment = $typeAliment;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|PlatPrepare[]
+     */
+    public function getPlatPrepares(): Collection
+    {
+        return $this->platPrepares;
+    }
+
+    public function addPlatPrepare(PlatPrepare $platPrepare): self
+    {
+        if (!$this->platPrepares->contains($platPrepare)) {
+            $this->platPrepares[] = $platPrepare;
+            $platPrepare->addAlimentsUtilise($this);
+        }
+
+        return $this;
+    }
+
+    public function removePlatPrepare(PlatPrepare $platPrepare): self
+    {
+        if ($this->platPrepares->contains($platPrepare)) {
+            $this->platPrepares->removeElement($platPrepare);
+            $platPrepare->removeAlimentUtilise($this);
+        }
 
         return $this;
     }

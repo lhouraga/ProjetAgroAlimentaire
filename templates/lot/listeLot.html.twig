@@ -23,9 +23,7 @@
       <td>
           <div class="float-right">
           <a href="{{path('AfficherDetailLot', {id: lot.id})}}" class="btn btn-success"> Detail Lot </a>
-          <form method="post" action="{{path('AfficherDetailLot', {id: lot.id})}}" style="display:inline-block" onSubmit="return confirm('etes vous sure de vouloir supprimer cette recette?')" >
-             <button class="btn btn-danger"> Supprimer </button>
-          </form>
+          <a href="{{path('tracabilitéLot', {id: lot.id})}}" class="btn btn-success"> tracabilité </a>
           </div>
        </td> 
    

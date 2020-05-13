@@ -33,8 +33,6 @@
 <tr>
     <th> Aliment</th>
     <th>Quantité nécessaire (kg)</th>
-    
-    <th class="float-right">Action souhaitée</th>
 </tr>
 </thead>
 <tbody>
@@ -42,14 +40,7 @@
  {%   for ingredient in ingredients %}
    <tr> 
        <td>{{ ingredient.Aliment}} </td>
-       <td>{{ ingredient.QteNecessaire}} </td>
-       
-      <td>
-          <div class="float-right">
-          <a href="{{path('DisponibiliteAliment', {id: ingredient.id})}}" class="btn btn-primary"> Disponibilité </a>
-          </div>
-       </td> 
-   
+       <td>{{ ingredient.QteNecessaire}} </td> 
   </tr>
   {% endfor %}
 </tbody>
